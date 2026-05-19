@@ -61,15 +61,6 @@ export default function VideoProduction() {
             <div
               key={reel.title}
               ref={el => reelRefs.current[i] = el}
-              style={{
-                height: '340px',
-                position: 'relative',
-                overflow: 'hidden',
-                borderRadius: '2px',
-                border: '1px solid rgba(201,168,76,0.12)',
-                cursor: 'pointer',
-                background: `linear-gradient(${135 + i * 15}deg, #0d0a02 0%, #1a1208 40%, #050503 100%)`,
-              }}
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'scale(1.02)'
                 e.currentTarget.style.borderColor = 'var(--gold)'

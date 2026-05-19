@@ -1,12 +1,13 @@
+import { Link } from 'react-router-dom'
 import { SMLogoMark } from './Loader'
 
 const footerLinks = [
-  { label: 'Home',     href: '#home' },
-  { label: 'About',    href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Work',     href: '#work' },
-  { label: 'Process',  href: '#process' },
-  { label: 'Contact',  href: '#contact' },
+  { label: 'Home',     to: '/' },
+  { label: 'About',    to: '/about' },
+  { label: 'Services', to: '/services' },
+  { label: 'Work',     to: '/work' },
+  { label: 'Process',  to: '/process' },
+  { label: 'Contact',  to: '/contact' },
 ]
 
 const serviceLinks = [
@@ -69,11 +70,6 @@ const socials = [
 
 export default function Footer() {
   const year = new Date().getFullYear()
-
-  const scrollTo = (href) => {
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
 
   return (
     <footer style={{
@@ -189,10 +185,9 @@ export default function Footer() {
             }}>Quick Links</h4>
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {footerLinks.map(link => (
-                <a
+                <Link
                   key={link.label}
-                  href={link.href}
-                  onClick={(e) => { e.preventDefault(); scrollTo(link.href) }}
+                  to={link.to}
                   style={{
                     fontFamily: 'var(--font-heading)',
                     fontSize: '0.875rem',
@@ -204,7 +199,7 @@ export default function Footer() {
                   }}
                   onMouseEnter={e => e.target.style.color = 'var(--gold)'}
                   onMouseLeave={e => e.target.style.color = 'var(--white-dim)'}
-                >{link.label}</a>
+                >{link.label}</Link>
               ))}
             </nav>
           </div>
@@ -221,10 +216,9 @@ export default function Footer() {
             }}>Services</h4>
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {serviceLinks.map(s => (
-                <a
+                <Link
                   key={s}
-                  href="#services"
-                  onClick={(e) => { e.preventDefault(); scrollTo('#services') }}
+                  to="/services"
                   style={{
                     fontFamily: 'var(--font-heading)',
                     fontSize: '0.875rem',
@@ -235,7 +229,7 @@ export default function Footer() {
                   }}
                   onMouseEnter={e => e.target.style.color = 'var(--gold)'}
                   onMouseLeave={e => e.target.style.color = 'var(--white-dim)'}
-                >{s}</a>
+                >{s}</Link>
               ))}
             </nav>
           </div>

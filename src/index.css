@@ -51,7 +51,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Lenis takes over smooth scrolling — keep auto here */
+  scroll-behavior: auto;
   overflow-x: hidden;
 }
 
@@ -65,13 +66,44 @@ body {
 }
 
 /* ============================================
-   SCROLLBAR
+   HIDE SCROLLBAR — EVERYWHERE
    ============================================ */
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--black); }
-::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* Chrome, Safari, Edge */
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* ============================================
+   LENIS SMOOTH SCROLL INTEGRATION
+   ============================================ */
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
 
 /* ============================================
    TYPOGRAPHY UTILITIES
@@ -275,6 +307,66 @@ body {
 }
 
 /* ============================================
+   PAGE TRANSITION CURTAIN
+   ============================================ */
+
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 88888;
+  pointer-events: none;
+  background: linear-gradient(135deg, var(--black) 0%, var(--navy) 50%, var(--black) 100%);
+  transform-origin: top;
+}
+
+.page-curtain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(201,168,76,0.15) 30%,
+    rgba(201,168,76,0.3) 50%,
+    rgba(201,168,76,0.15) 70%,
+    transparent 100%
+  );
+  animation: curtainShimmer 0.8s ease-in-out;
+}
+
+@keyframes curtainShimmer {
+  0%   { opacity: 0; transform: translateX(-100%); }
+  50%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+/* ============================================
+   VIDEO SCROLL SCENE
+   ============================================ */
+
+.video-scroll-scene {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.video-scroll-canvas {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: block;
+}
+
+/* ============================================
+   PAGE LAYOUT
+   ============================================ */
+
+.page-wrapper {
+  min-height: 100vh;
+  background: var(--black);
+}
+
+/* ============================================
    ANIMATIONS
    ============================================ */
 
@@ -303,6 +395,21 @@ body {
   100% { transform: translateY(100vh); }
 }
 
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); transform-origin: top; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes goldReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-pulse-gold { animation: goldPulse 3s ease-in-out infinite; }
 
@@ -329,4 +436,13 @@ body {
 ::selection {
   background: var(--gold-glow);
   color: var(--gold-light);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
+  .desktop-nav { display: none !important; }
+  .hamburger-btn { display: flex !important; }
 }

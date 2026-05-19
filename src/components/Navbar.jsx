@@ -1,40 +1,34 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import { SMLogoMark } from './Loader'
 
 const navLinks = [
-  { label: 'Home',     href: '#home' },
-  { label: 'About',    href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Work',     href: '#work' },
-  { label: 'Process',  href: '#process' },
-  { label: 'Contact',  href: '#contact' },
+  { label: 'Home',     to: '/' },
+  { label: 'About',    to: '/about' },
+  { label: 'Services', to: '/services' },
+  { label: 'Work',     to: '/work' },
+  { label: 'Process',  to: '/process' },
+  { label: 'Contact',  to: '/contact' },
 ]
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [active, setActive] = useState('home')
-  const [menuOpen, setMenuOpen] = useState(false)
-  const navRef = useRef(null)
+  const [scrolled, setScrolled]   = useState(false)
+  const [menuOpen, setMenuOpen]   = useState(false)
+  const navRef       = useRef(null)
   const mobileMenuRef = useRef(null)
+  const location     = useLocation()
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 60)
-
-      // Update active link based on scroll position
-      const sections = navLinks.map(l => l.href.replace('#', ''))
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i])
-        if (el && window.scrollY >= el.offsetTop - 200) {
-          setActive(sections[i])
-          break
-        }
-      }
-    }
+    const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
 
   // Entrance animation
   useEffect(() => {
@@ -55,10 +49,9 @@ export default function Navbar() {
     }
   }, [menuOpen])
 
-  const handleNav = (href) => {
-    setMenuOpen(false)
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  const isActive = (to) => {
+    if (to === '/') return location.pathname === '/'
+    return location.pathname.startsWith(to)
   }
 
   return (
@@ -81,11 +74,11 @@ export default function Navbar() {
         justifyContent: 'space-between',
       }}>
         {/* Logo */}
-        <a href="#home" onClick={() => handleNav('#home')} style={{
+        <Link to="/" style={{
           display: 'flex',
           alignItems: 'center',
           gap: '0.75rem',
-          textDecoration: 'none'
+          textDecoration: 'none',
         }}>
           <SMLogoMark size={42} />
           <div>
@@ -96,17 +89,17 @@ export default function Navbar() {
               letterSpacing: '0.15em',
               color: 'var(--white)',
               textTransform: 'uppercase',
-              lineHeight: 1.1
+              lineHeight: 1.1,
             }}>Struders</div>
             <div style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '0.55rem',
               letterSpacing: '0.25em',
               color: 'var(--gold)',
-              textTransform: 'uppercase'
+              textTransform: 'uppercase',
             }}>Marketing Co.</div>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Links */}
         <div style={{
@@ -115,12 +108,11 @@ export default function Navbar() {
           gap: '2.5rem',
         }} className="desktop-nav">
           {navLinks.map(link => {
-            const id = link.href.replace('#', '')
+            const active = isActive(link.to)
             return (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
-                onClick={(e) => { e.preventDefault(); handleNav(link.href) }}
+                to={link.to}
                 style={{
                   fontFamily: 'var(--font-heading)',
                   fontSize: '0.8rem',
@@ -128,32 +120,50 @@ export default function Navbar() {
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
                   textDecoration: 'none',
-                  color: active === id ? 'var(--gold)' : 'var(--white-dim)',
+                  color: active ? 'var(--gold)' : 'var(--white-dim)',
                   paddingBottom: '4px',
-                  borderBottom: active === id ? '1px solid var(--gold)' : '1px solid transparent',
+                  borderBottom: active ? '1px solid var(--gold)' : '1px solid transparent',
                   transition: 'all 0.3s ease',
+                  position: 'relative',
                 }}
                 onMouseEnter={e => {
-                  if (active !== id) e.target.style.color = 'var(--white)'
+                  if (!active) e.currentTarget.style.color = 'var(--white)'
                 }}
                 onMouseLeave={e => {
-                  if (active !== id) e.target.style.color = 'var(--white-dim)'
+                  if (!active) e.currentTarget.style.color = 'var(--white-dim)'
                 }}
               >
                 {link.label}
-              </a>
+
+                {/* Active dot indicator */}
+                {active && (
+                  <span style={{
+                    position: 'absolute',
+                    bottom: '-8px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '4px',
+                    height: '4px',
+                    borderRadius: '50%',
+                    background: 'var(--gold)',
+                    boxShadow: '0 0 6px var(--gold)',
+                    display: 'block',
+                  }} />
+                )}
+              </Link>
             )
           })}
         </div>
 
-        {/* CTA Button */}
+        {/* CTA Button + Hamburger */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <a href="#contact"
-            onClick={(e) => { e.preventDefault(); handleNav('#contact') }}
+          <Link
+            to="/contact"
             className="btn-gold"
-            style={{ fontSize: '0.75rem', padding: '0.6rem 1.4rem' }}>
+            style={{ fontSize: '0.75rem', padding: '0.6rem 1.4rem' }}
+          >
             Let's Connect
-          </a>
+          </Link>
 
           {/* Hamburger */}
           <button
@@ -171,32 +181,29 @@ export default function Navbar() {
             className="hamburger-btn"
             aria-label="Toggle menu"
           >
-            {[0,1,2].map(i => (
+            {[0, 1, 2].map(i => (
               <span key={i} style={{
                 display: 'block',
                 width: '24px',
                 height: '1.5px',
-                background: menuOpen && i===1 ? 'transparent' : 'var(--gold)',
+                background: menuOpen && i === 1 ? 'transparent' : 'var(--gold)',
                 transform: menuOpen
-                  ? i===0 ? 'translateY(6.5px) rotate(45deg)'
-                  : i===2 ? 'translateY(-6.5px) rotate(-45deg)'
+                  ? i === 0 ? 'translateY(6.5px) rotate(45deg)'
+                  : i === 2 ? 'translateY(-6.5px) rotate(-45deg)'
                   : 'none'
                   : 'none',
-                transition: 'all 0.3s ease'
-              }}/>
+                transition: 'all 0.3s ease',
+              }} />
             ))}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Full-Screen Menu */}
       {menuOpen && (
         <div ref={mobileMenuRef} style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          top: 0, left: 0, right: 0, bottom: 0,
           background: 'rgba(5,5,5,0.98)',
           zIndex: 999,
           display: 'flex',
@@ -207,36 +214,40 @@ export default function Navbar() {
           backdropFilter: 'blur(20px)',
         }}>
           <SMLogoMark size={64} />
-          {navLinks.map(link => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={(e) => { e.preventDefault(); handleNav(link.href) }}
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '1.8rem',
-                fontWeight: 700,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-                color: 'var(--white-soft)',
-                transition: 'color 0.2s'
-              }}
-              onMouseEnter={e => e.target.style.color = 'var(--gold)'}
-              onMouseLeave={e => e.target.style.color = 'var(--white-soft)'}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map(link => {
+            const active = isActive(link.to)
+            return (
+              <Link
+                key={link.label}
+                to={link.to}
+                style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '1.8rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  color: active ? 'var(--gold)' : 'var(--white-soft)',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={e => e.target.style.color = 'var(--gold)'}
+                onMouseLeave={e => e.target.style.color = active ? 'var(--gold)' : 'var(--white-soft)'}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
+          {/* Gold divider line */}
+          <div style={{ width: '40px', height: '1px', background: 'var(--gold)', opacity: 0.4 }} />
+          <Link
+            to="/contact"
+            className="btn-gold"
+            style={{ marginTop: '0.5rem' }}
+          >
+            Let's Connect
+          </Link>
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 900px) {
-          .desktop-nav { display: none !important; }
-          .hamburger-btn { display: flex !important; }
-        }
-      `}</style>
     </>
   )
 }

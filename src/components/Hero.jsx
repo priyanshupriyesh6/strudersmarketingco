@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Points, PointMaterial } from '@react-three/drei'
 import * as THREE from 'three'
@@ -209,35 +210,27 @@ export default function Hero() {
           flexWrap: 'wrap',
           gap: '1rem',
         }}>
-          <a
-            href="#work"
+          <Link
+            to="/work"
             className="btn-gold"
             id="hero-explore-btn"
-            onClick={(e) => {
-              e.preventDefault()
-              document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
-            }}
           >
             Explore Our Work
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
-          </a>
-          <a
-            href="#services"
+          </Link>
+          <Link
+            to="/services"
             className="btn-ghost"
             id="hero-showreel-btn"
-            onClick={(e) => {
-              e.preventDefault()
-              document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })
-            }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1"/>
               <path d="M6.5 5.5l4 2.5-4 2.5V5.5z" fill="currentColor"/>
             </svg>
-            Watch Showreel
-          </a>
+            Our Services
+          </Link>
         </div>
       </div>
 
