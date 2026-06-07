@@ -3,7 +3,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import VideoScrollScene from '../components/VideoScrollScene'
 import { SMLogoMark } from '../components/Loader'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -31,17 +30,17 @@ export default function AboutPage() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Page hero entrance
-      gsap.fromTo(heroRef.current.querySelectorAll('.about-hero-line'),
-        { opacity: 0, y: 60, skewY: 3 },
-        { opacity: 1, y: 0, skewY: 0, stagger: 0.15, duration: 1.1, ease: 'power4.out', delay: 0.3 }
+      gsap.fromTo(heroRef.current.querySelectorAll('.about-hero-el'),
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, stagger: 0.12, duration: 1.1, ease: 'power3.out', delay: 0.2 }
       )
 
       // Pillars stagger
       gsap.fromTo(pillarsRef.current.querySelectorAll('.pillar-card'),
-        { opacity: 0, y: 80, scale: 0.9 },
+        { opacity: 0, y: 60, scale: 0.95 },
         {
-          opacity: 1, y: 0, scale: 1, stagger: 0.12, duration: 0.9, ease: 'back.out(1.5)',
-          scrollTrigger: { trigger: pillarsRef.current, start: 'top 80%', once: true }
+          opacity: 1, y: 0, scale: 1, stagger: 0.12, duration: 0.9, ease: 'power3.out',
+          scrollTrigger: { trigger: pillarsRef.current, start: 'top 85%', once: true }
         }
       )
 
@@ -58,9 +57,9 @@ export default function AboutPage() {
 
       // Manifesto lines reveal
       gsap.fromTo(manifestoRef.current.querySelectorAll('.manifesto-line'),
-        { opacity: 0, x: -50 },
+        { opacity: 0, x: -30 },
         {
-          opacity: 1, x: 0, stagger: 0.1, duration: 0.8, ease: 'power3.out',
+          opacity: 1, x: 0, stagger: 0.15, duration: 0.8, ease: 'power3.out',
           scrollTrigger: { trigger: manifestoRef.current, start: 'top 75%', once: true }
         }
       )
@@ -79,44 +78,47 @@ export default function AboutPage() {
           alignItems: 'flex-end',
           paddingTop: '10rem',
           paddingBottom: '6rem',
-          background: 'linear-gradient(180deg, var(--navy) 0%, var(--black) 100%)',
+          background: 'var(--black)',
           position: 'relative',
           overflow: 'hidden',
         }}>
           {/* Background grid */}
+          <div className="bg-dots" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.5 }} />
+
+          {/* Radial glow */}
           <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            backgroundImage: `
-              linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px)
-            `,
-            backgroundSize: '80px 80px',
+            position: 'absolute',
+            top: '50%', right: '10%',
+            transform: 'translateY(-50%)',
+            width: '600px', height: '600px',
+            background: 'radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)',
+            pointerEvents: 'none',
           }} />
 
           {/* Faint SM watermark */}
           <div style={{
             position: 'absolute', right: '5%', top: '50%',
             transform: 'translateY(-50%)',
-            opacity: 0.04, pointerEvents: 'none',
+            opacity: 0.03, pointerEvents: 'none',
           }}>
             <SMLogoMark size={320} />
           </div>
 
-          <div className="container" ref={heroRef}>
-            <div className="subheading about-hero-line" style={{ marginBottom: '1.5rem' }}>
-              About Us
+          <div className="container" ref={heroRef} style={{ position: 'relative', zIndex: 1 }}>
+            <div className="section-label about-hero-el" style={{ marginBottom: '1.5rem' }}>
+              <span className="text-label" style={{ color: 'var(--gold)' }}>About Us</span>
             </div>
-            <h1 className="heading-xl about-hero-line" style={{ color: 'var(--white)', marginBottom: '0.5rem' }}>
+            <h1 className="text-h1 about-hero-el" style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
               WE DON'T JUST
             </h1>
-            <h1 className="heading-xl about-hero-line" style={{ marginBottom: '0.5rem' }}>
-              <span style={{ color: 'var(--gold)' }}>MARKET.</span>
+            <h1 className="text-h1 about-hero-el" style={{ marginBottom: '0.5rem' }}>
+              <span className="text-gradient">MARKET.</span>
             </h1>
-            <h1 className="heading-xl about-hero-line" style={{ color: 'var(--white)', marginBottom: '2rem' }}>
-              WE CREATE <span style={{ color: 'var(--gold)' }}>PRESENCE.</span>
+            <h1 className="text-h1 about-hero-el" style={{ color: 'var(--text-primary)', marginBottom: '2rem' }}>
+              WE CREATE <span className="text-serif text-gradient-animated">PRESENCE.</span>
             </h1>
 
-            <p className="body-text about-hero-line" style={{ maxWidth: '560px' }}>
+            <p className="text-body about-hero-el" style={{ maxWidth: '560px' }}>
               At Struders Marketing Co., we blend strategy, creativity, and culture
               to build impactful digital identities. From influencer management to
               cinematic campaigns, we create experiences that connect, engage, and grow.
@@ -124,20 +126,18 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── Brand Video Scroll ──────────────────────────────────────── */}
-        <VideoScrollScene height="180vh" label="About — Our Story" />
-
         {/* ── Pillars ─────────────────────────────────────────────────── */}
         <section className="section" style={{
-          background: 'var(--navy)',
+          background: 'var(--surface-0)',
         }}>
           <div className="container">
             <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-              <div className="subheading" style={{ marginBottom: '1rem' }}>What Drives Us</div>
-              <h2 className="heading-lg" style={{ color: 'var(--white)' }}>
-                FOUR PILLARS OF <span style={{ color: 'var(--gold)' }}>EXCELLENCE</span>
+              <div className="section-label justify-center" style={{ marginBottom: '1rem' }}>
+                <span className="text-label" style={{ color: 'var(--text-secondary)' }}>What Drives Us</span>
+              </div>
+              <h2 className="text-h2" style={{ color: 'var(--text-primary)' }}>
+                FOUR PILLARS OF <span className="text-gradient">EXCELLENCE</span>
               </h2>
-              <span className="gold-line-center" style={{ marginTop: '1.5rem' }} />
             </div>
 
             <div ref={pillarsRef} style={{
@@ -145,41 +145,43 @@ export default function AboutPage() {
               gridTemplateColumns: 'repeat(4, 1fr)',
               gap: '1.5rem',
             }} className="pillars-grid">
-              {pillars.map(p => (
-                <div key={p.label} className="pillar-card glass-card" style={{
-                  padding: '2.5rem 1.75rem',
+              {pillars.map((p, i) => (
+                <div key={p.label} className="pillar-card glass-card tilt-card" style={{
+                  padding: '3rem 2rem',
                   textAlign: 'center',
                   cursor: 'default',
                   position: 'relative',
                   overflow: 'hidden',
-                }}>
-                  {/* Corner accent */}
-                  <div style={{
-                    position: 'absolute', top: 0, left: 0,
-                    width: '30px', height: '30px',
-                    borderTop: '1px solid var(--gold)',
-                    borderLeft: '1px solid var(--gold)',
-                    opacity: 0.4,
-                  }} />
-
-                  <div style={{ fontSize: '2rem', color: 'var(--gold)', marginBottom: '1rem' }}>
+                  borderRadius: '16px',
+                }}
+                onMouseMove={(e) => {
+                  const card = e.currentTarget;
+                  const rect = card.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const y = e.clientY - rect.top;
+                  const cx = rect.width / 2;
+                  const cy = rect.height / 2;
+                  gsap.to(card, { rotateX: ((y - cy) / cy) * -6, rotateY: ((x - cx) / cx) * 8, duration: 0.4, transformPerspective: 800 });
+                }}
+                onMouseLeave={(e) => gsap.to(e.currentTarget, { rotateX: 0, rotateY: 0, duration: 0.7 })}
+                >
+                  <div style={{ fontSize: '2.5rem', color: 'var(--gold)', marginBottom: '1.5rem' }}>
                     {p.icon}
                   </div>
-                  <div style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '1.1rem',
+                  <h3 style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '1.25rem',
                     fontWeight: 700,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: 'var(--white)',
+                    letterSpacing: '-0.02em',
+                    color: 'var(--text-primary)',
                     marginBottom: '0.75rem',
-                  }}>{p.label}</div>
+                  }}>{p.label}</h3>
                   <p style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '0.85rem',
-                    fontWeight: 300,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '0.9rem',
+                    fontWeight: 400,
                     lineHeight: 1.7,
-                    color: 'var(--white-dim)',
+                    color: 'var(--text-secondary)',
                   }}>{p.desc}</p>
                 </div>
               ))}
@@ -199,8 +201,8 @@ export default function AboutPage() {
         {/* ── Stats ───────────────────────────────────────────────────── */}
         <section className="section" style={{
           background: 'var(--black)',
-          borderTop: '1px solid rgba(201,168,76,0.08)',
-          borderBottom: '1px solid rgba(201,168,76,0.08)',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)',
         }}>
           <div ref={statsRef} className="container">
             <div style={{
@@ -212,19 +214,24 @@ export default function AboutPage() {
               {teamValues.map(s => (
                 <div key={s.label}>
                   <div className="stat-number" style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-                    fontWeight: 700,
-                    color: 'var(--gold)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 'clamp(3rem, 5vw, 4.5rem)',
+                    fontWeight: 800,
+                    color: 'var(--text-primary)',
+                    letterSpacing: '-0.04em',
                     lineHeight: 1,
-                    marginBottom: '0.5rem',
-                  }}>{s.number}</div>
+                    marginBottom: '0.75rem',
+                  }}>
+                    {s.number.replace(/[^0-9]/g, '')}
+                    <span className="text-gradient" style={{ fontSize: '0.8em' }}>
+                      {s.number.replace(/[0-9]/g, '')}
+                    </span>
+                  </div>
                   <div style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.2em',
-                    color: 'var(--white-dim)',
-                    textTransform: 'uppercase',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    color: 'var(--text-secondary)',
                   }}>{s.label}</div>
                 </div>
               ))}
@@ -240,10 +247,12 @@ export default function AboutPage() {
 
         {/* ── Manifesto ───────────────────────────────────────────────── */}
         <section className="section" style={{
-          background: 'linear-gradient(180deg, var(--black) 0%, var(--navy) 100%)',
+          background: 'var(--surface-0)',
         }}>
           <div className="container" ref={manifestoRef}>
-            <div className="subheading manifesto-line" style={{ marginBottom: '2rem' }}>Our Manifesto</div>
+            <div className="section-label manifesto-line" style={{ marginBottom: '2.5rem' }}>
+              <span className="text-label" style={{ color: 'var(--text-secondary)' }}>Our Manifesto</span>
+            </div>
 
             {[
               'We believe brands are living things — they breathe, evolve, and leave marks.',
@@ -252,16 +261,18 @@ export default function AboutPage() {
               'We are Struders. We don\'t follow trends. We create them.',
             ].map((line, i) => (
               <div key={i} className="manifesto-line" style={{
-                fontFamily: i === 3 ? 'var(--font-serif)' : 'var(--font-heading)',
-                fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'clamp(1rem, 2vw, 1.4rem)',
-                fontWeight: i === 3 ? 400 : 300,
+                fontFamily: i === 3 ? 'var(--font-serif)' : 'var(--font-sans)',
+                fontSize: i === 3 ? 'clamp(1.8rem, 4vw, 3rem)' : 'clamp(1.2rem, 2.5vw, 1.8rem)',
+                fontWeight: i === 3 ? 400 : 500,
                 fontStyle: i === 3 ? 'italic' : 'normal',
-                color: i === 3 ? 'var(--gold)' : 'var(--white-dim)',
-                lineHeight: 1.6,
-                borderLeft: '2px solid rgba(201,168,76,0.3)',
+                color: i === 3 ? 'var(--gold)' : 'var(--text-secondary)',
+                lineHeight: 1.4,
+                letterSpacing: i === 3 ? '0' : '-0.02em',
                 paddingLeft: '2rem',
-                marginBottom: '1.5rem',
-                maxWidth: '800px',
+                borderLeft: '2px solid',
+                borderColor: i === 3 ? 'var(--gold)' : 'var(--border)',
+                marginBottom: '2rem',
+                maxWidth: '900px',
               }}>
                 {line}
               </div>

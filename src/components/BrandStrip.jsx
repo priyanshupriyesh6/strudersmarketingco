@@ -1,74 +1,66 @@
-export default function BrandStrip() {
-  const text = 'Creativity  •  Influence  •  Strategy  •  Culture  •  Vision  •  Impact  •  Growth  •  '
-  const repeated = text.repeat(4)
+const row1 = ['Creativity', 'Influence', 'Strategy', 'Culture', 'Vision', 'Impact', 'Growth', 'Innovation', 'Identity', 'Performance']
+const row2 = ['Analytics', 'Storytelling', 'Community', 'Brand', 'Media', 'Audience', 'Content', 'Conversion', 'Engagement', 'Excellence']
 
+function MarqueeRow({ items, reverse = false }) {
+  const doubled = [...items, ...items]
+
+  return (
+    <div style={{ overflow: 'hidden', width: '100%' }} className="marquee-fade">
+      <div style={{
+        display: 'flex',
+        gap: '2.5rem',
+        whiteSpace: 'nowrap',
+        animation: `${reverse ? 'marqueeRight' : 'marqueeLeft'} ${reverse ? '28s' : '22s'} linear infinite`,
+        willChange: 'transform',
+      }}>
+        {doubled.map((word, i) => (
+          <span key={i} style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '2.5rem',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '0.8rem',
+            fontWeight: 500,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: reverse ? 'var(--text-tertiary)' : 'var(--text-secondary)',
+            flexShrink: 0,
+          }}>
+            {word}
+            <svg width="4" height="4" viewBox="0 0 4 4" fill="currentColor" style={{ opacity: 0.4 }}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export default function BrandStrip() {
   return (
     <section style={{
       position: 'relative',
-      padding: '0',
       overflow: 'hidden',
-      background: 'var(--black)',
+      background: 'var(--surface-0)',
+      borderTop: '1px solid var(--border)',
+      borderBottom: '1px solid var(--border)',
     }}>
-      {/* Top gold border */}
-      <div style={{
-        height: '1px',
-        background: 'linear-gradient(90deg, transparent, var(--gold), transparent)',
-      }} />
-
-      <div style={{
-        padding: '1.5rem 0',
-        position: 'relative',
-        background: 'linear-gradient(90deg, var(--black) 0%, var(--navy-mid) 50%, var(--black) 100%)',
-      }}>
-        {/* Left fade */}
-        <div style={{
-          position: 'absolute', left: 0, top: 0, bottom: 0, width: '120px',
-          background: 'linear-gradient(90deg, var(--black), transparent)',
-          zIndex: 2, pointerEvents: 'none'
-        }} />
-        {/* Right fade */}
-        <div style={{
-          position: 'absolute', right: 0, top: 0, bottom: 0, width: '120px',
-          background: 'linear-gradient(270deg, var(--black), transparent)',
-          zIndex: 2, pointerEvents: 'none'
-        }} />
-
-        {/* Moving text */}
-        <div style={{
-          display: 'flex',
-          whiteSpace: 'nowrap',
-          animation: 'marquee 30s linear infinite',
-          willChange: 'transform',
-        }}>
-          <span style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            letterSpacing: '0.35em',
-            textTransform: 'uppercase',
-            color: 'var(--gold)',
-            paddingRight: '0',
-          }}>
-            {repeated}
-          </span>
-          <span style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            letterSpacing: '0.35em',
-            textTransform: 'uppercase',
-            color: 'var(--gold)',
-          }}>
-            {repeated}
-          </span>
-        </div>
+      <div style={{ padding: '1.75rem 0 1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <MarqueeRow items={row1} reverse={false} />
+        <MarqueeRow items={row2} reverse={true} />
       </div>
 
-      {/* Bottom gold border */}
-      <div style={{
-        height: '1px',
-        background: 'linear-gradient(90deg, transparent, var(--gold-dim), transparent)',
-      }} />
+      <style>{`
+        @keyframes marqueeLeft {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+        @keyframes marqueeRight {
+          from { transform: translateX(-50%); }
+          to   { transform: translateX(0); }
+        }
+      `}</style>
     </section>
   )
 }

@@ -3,7 +3,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import VideoScrollScene from '../components/VideoScrollScene'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -100,16 +99,16 @@ export default function ServicesPage() {
     const ctx = gsap.context(() => {
       // Hero
       gsap.fromTo(heroRef.current.querySelectorAll('.srv-hero-el'),
-        { opacity: 0, y: 60 },
-        { opacity: 1, y: 0, stagger: 0.12, duration: 1, ease: 'power4.out', delay: 0.3 }
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, stagger: 0.12, duration: 1, ease: 'power3.out', delay: 0.2 }
       )
 
       // Cards beam-in from bottom
       gsap.fromTo(cardsRef.current,
-        { opacity: 0, y: 80, scale: 0.92 },
+        { opacity: 0, y: 60, scale: 0.95 },
         {
           opacity: 1, y: 0, scale: 1,
-          stagger: 0.08, duration: 0.9, ease: 'power3.out',
+          stagger: 0.08, duration: 0.8, ease: 'power3.out',
           scrollTrigger: { trigger: gridRef.current, start: 'top 80%', once: true }
         }
       )
@@ -140,10 +139,13 @@ export default function ServicesPage() {
           alignItems: 'flex-end',
           paddingTop: '10rem',
           paddingBottom: '5rem',
-          background: 'var(--navy)',
+          background: 'var(--black)',
           position: 'relative',
           overflow: 'hidden',
         }}>
+          {/* Dot Grid Background */}
+          <div className="bg-dots" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.4 }} />
+
           {/* Radial glow */}
           <div style={{
             position: 'absolute',
@@ -154,26 +156,25 @@ export default function ServicesPage() {
             pointerEvents: 'none',
           }} />
 
-          <div className="container" ref={heroRef}>
-            <div className="subheading srv-hero-el" style={{ marginBottom: '1.5rem' }}>What We Do</div>
-            <h1 className="heading-xl srv-hero-el" style={{ color: 'var(--white)', marginBottom: '0.5rem' }}>
+          <div className="container" ref={heroRef} style={{ position: 'relative', zIndex: 1 }}>
+            <div className="section-label srv-hero-el" style={{ marginBottom: '1.5rem' }}>
+              <span className="text-label" style={{ color: 'var(--gold)' }}>What We Do</span>
+            </div>
+            <h1 className="text-h1 srv-hero-el" style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
               SOLUTIONS THAT
             </h1>
-            <h1 className="heading-xl srv-hero-el" style={{ color: 'var(--gold)', marginBottom: '2rem' }}>
+            <h1 className="text-h1 srv-hero-el text-gradient-animated" style={{ marginBottom: '2rem' }}>
               DRIVE GROWTH.
             </h1>
-            <p className="body-text srv-hero-el" style={{ maxWidth: '520px' }}>
+            <p className="text-body srv-hero-el" style={{ maxWidth: '520px' }}>
               Six core disciplines. One unified mission: to build brands that command
               attention, shape culture, and deliver measurable impact.
             </p>
           </div>
         </section>
 
-        {/* ── Brand Video Scroll ──────────────────────────────────────── */}
-        <VideoScrollScene height="160vh" label="Services — What We Do" />
-
         {/* ── Services Grid ───────────────────────────────────────────── */}
-        <section className="section" style={{ background: 'var(--black)' }}>
+        <section className="section" style={{ background: 'var(--surface-0)' }}>
           {/* Radial center glow */}
           <div style={{
             position: 'absolute',
@@ -195,81 +196,105 @@ export default function ServicesPage() {
                   key={svc.id}
                   id={`service-${svc.id}`}
                   ref={el => cardsRef.current[i] = el}
-                  className="glass-card"
+                  className="glass-card tilt-card"
                   style={{
                     padding: '2.5rem 2rem',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '1rem',
                     cursor: 'default',
-                    background: 'linear-gradient(135deg, rgba(10,15,30,0.6) 0%, rgba(5,5,5,0.4) 100%)',
                     position: 'relative',
                     overflow: 'hidden',
-                    transition: 'transform 0.4s var(--ease-smooth)',
                   }}
-                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-6px)'}
-                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                  onMouseMove={(e) => {
+                    const card = e.currentTarget;
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const cx = rect.width / 2;
+                    const cy = rect.height / 2;
+                    const rotX = ((y - cy) / cy) * -8;
+                    const rotY = ((x - cx) / cx) * 10;
+                    
+                    gsap.to(card, {
+                      rotateX: rotX,
+                      rotateY: rotY,
+                      duration: 0.4,
+                      ease: 'power2.out',
+                      transformPerspective: 800,
+                    });
+                  }}
+                  onMouseLeave={(e) => {
+                    gsap.to(e.currentTarget, {
+                      rotateX: 0,
+                      rotateY: 0,
+                      duration: 0.7,
+                      ease: 'power3.out',
+                      transformPerspective: 800,
+                    });
+                  }}
                 >
-                  {/* Top glow line */}
-                  <div style={{
-                    position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
-                    background: 'linear-gradient(90deg, transparent, var(--gold-dim), transparent)',
-                    opacity: 0,
-                    transition: 'opacity 0.4s ease',
-                  }} className="card-top-line" />
-
                   {/* Service number */}
                   <div className="srv-tag" style={{
                     position: 'absolute', top: '1.5rem', right: '1.5rem',
-                    fontFamily: 'var(--font-mono)',
+                    fontFamily: 'var(--font-sans)',
                     fontSize: '2.5rem',
-                    fontWeight: 700,
-                    color: 'rgba(201,168,76,0.06)',
+                    fontWeight: 800,
+                    color: 'rgba(201,168,76,0.08)',
                     lineHeight: 1,
                     pointerEvents: 'none',
                   }}>{svc.tag}</div>
 
                   {/* Icon */}
-                  <div style={{ color: 'var(--gold)', opacity: 0.9 }}>{svc.icon}</div>
+                  <div style={{
+                    width: '44px', height: '44px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'rgba(201,168,76,0.08)',
+                    border: '1px solid rgba(201,168,76,0.15)',
+                    borderRadius: '12px',
+                    color: 'var(--gold)',
+                    flexShrink: 0,
+                  }}>
+                    {svc.icon}
+                  </div>
 
                   {/* Title */}
                   <h2 style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '1.05rem',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '1.15rem',
                     fontWeight: 700,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: 'var(--white)',
+                    letterSpacing: '-0.01em',
+                    color: 'var(--text-primary)',
+                    marginTop: '0.5rem',
                   }}>{svc.title}</h2>
 
                   {/* Description */}
                   <p style={{
-                    fontFamily: 'var(--font-heading)',
+                    fontFamily: 'var(--font-sans)',
                     fontSize: '0.875rem',
-                    fontWeight: 300,
+                    fontWeight: 400,
                     lineHeight: 1.7,
-                    color: 'var(--white-dim)',
+                    color: 'var(--text-secondary)',
                     flex: 1,
                   }}>{svc.desc}</p>
 
                   {/* Learn more */}
                   <div style={{
-                    display: 'flex', alignItems: 'center', gap: '0.5rem',
+                    display: 'flex', alignItems: 'center', gap: '0.4rem',
                     color: 'var(--gold)',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.7rem',
-                    letterSpacing: '0.15em',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
                     marginTop: '0.5rem',
-                    opacity: 0.7,
-                    transition: 'opacity 0.3s, gap 0.3s',
+                    transition: 'gap 0.3s ease',
                     cursor: 'pointer',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.style.gap = '0.75rem' }}
-                  onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; e.currentTarget.style.gap = '0.5rem' }}
+                  onMouseEnter={e => { e.currentTarget.style.gap = '0.65rem' }}
+                  onMouseLeave={e => { e.currentTarget.style.gap = '0.4rem' }}
                   >
                     Learn more
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                      <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
                     </svg>
                   </div>
                 </div>
@@ -278,7 +303,6 @@ export default function ServicesPage() {
           </div>
 
           <style>{`
-            .glass-card:hover .card-top-line { opacity: 1 !important; }
             @media (max-width: 900px) {
               .services-page-grid { grid-template-columns: repeat(2, 1fr) !important; }
             }

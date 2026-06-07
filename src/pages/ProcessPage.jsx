@@ -3,7 +3,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import VideoScrollScene from '../components/VideoScrollScene'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -52,13 +51,13 @@ const steps = [
 
 const codeLines = [
   { indent: 0, text: 'const brand = new Struders({', color: 'var(--gold)' },
-  { indent: 1, text: 'strategy: "premium",',         color: 'var(--white-dim)' },
-  { indent: 1, text: 'audience: "global",',           color: 'var(--white-dim)' },
+  { indent: 1, text: 'strategy: "premium",',         color: 'var(--text-secondary)' },
+  { indent: 1, text: 'audience: "global",',           color: 'var(--text-secondary)' },
   { indent: 1, text: 'impact: Infinity,',             color: '#7ec8e3' },
   { indent: 0, text: '})',                            color: 'var(--gold)' },
   { indent: 0, text: '',                              color: '' },
   { indent: 0, text: 'brand.launch()',                color: '#a8e6a3' },
-  { indent: 0, text: '// → Building presence...',    color: 'var(--white-muted)' },
+  { indent: 0, text: '// → Building presence...',    color: 'var(--text-tertiary)' },
 ]
 
 export default function ProcessPage() {
@@ -73,18 +72,18 @@ export default function ProcessPage() {
     const ctx = gsap.context(() => {
       // Hero entrance
       gsap.fromTo(heroRef.current.querySelectorAll('.proc-hero-el'),
-        { opacity: 0, y: 70 },
-        { opacity: 1, y: 0, stagger: 0.12, duration: 1.1, ease: 'power4.out', delay: 0.3 }
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, stagger: 0.12, duration: 1.1, ease: 'power3.out', delay: 0.2 }
       )
 
       // Steps — pinned scrub reveal
       stepsRef.current.forEach((step, i) => {
         if (!step) return
         gsap.fromTo(step,
-          { opacity: 0, x: i % 2 === 0 ? -80 : 80, scale: 0.95 },
+          { opacity: 0, x: i % 2 === 0 ? -40 : 40, scale: 0.98 },
           {
             opacity: 1, x: 0, scale: 1, duration: 1, ease: 'power3.out',
-            scrollTrigger: { trigger: step, start: 'top 78%', once: true }
+            scrollTrigger: { trigger: step, start: 'top 80%', once: true }
           }
         )
 
@@ -95,7 +94,7 @@ export default function ProcessPage() {
             { opacity: 0, scale: 0.5 },
             {
               opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)',
-              scrollTrigger: { trigger: step, start: 'top 80%', once: true }
+              scrollTrigger: { trigger: step, start: 'top 85%', once: true }
             }
           )
         }
@@ -107,7 +106,7 @@ export default function ProcessPage() {
             { scaleY: 0, transformOrigin: 'top' },
             {
               scaleY: 1, duration: 0.8, ease: 'power2.out',
-              scrollTrigger: { trigger: step, start: 'center 70%', once: true }
+              scrollTrigger: { trigger: step, start: 'center 75%', once: true }
             }
           )
         }
@@ -117,7 +116,7 @@ export default function ProcessPage() {
       linesRef.current.forEach((el, i) => {
         if (!el) return
         gsap.fromTo(el,
-          { opacity: 0, x: -20 },
+          { opacity: 0, x: -10 },
           {
             opacity: 1, x: 0, duration: 0.4, delay: i * 0.18, ease: 'power1.out',
             scrollTrigger: { trigger: codeRef.current, start: 'top 85%', once: true }
@@ -126,7 +125,7 @@ export default function ProcessPage() {
       })
 
       // Blinking cursor
-      gsap.to(cursorRef.current, { opacity: 0, duration: 0.6, repeat: -1, yoyo: true, ease: 'none' })
+      gsap.to(cursorRef.current, { opacity: 0, duration: 0.5, repeat: -1, yoyo: true, ease: 'steps(1)' })
     })
     return () => ctx.revert()
   }, [])
@@ -142,40 +141,42 @@ export default function ProcessPage() {
           alignItems: 'flex-end',
           paddingTop: '10rem',
           paddingBottom: '5rem',
-          background: 'linear-gradient(180deg, var(--navy) 0%, var(--black) 100%)',
+          background: 'var(--black)',
           position: 'relative',
           overflow: 'hidden',
         }}>
           {/* Animated grid */}
+          <div className="bg-grid" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.5 }} />
+
+          {/* Radial glow */}
           <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            backgroundImage: `
-              linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px',
+            position: 'absolute',
+            top: '50%', left: '10%',
+            transform: 'translateY(-50%)',
+            width: '600px', height: '600px',
+            background: 'radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%)',
+            pointerEvents: 'none',
           }} />
 
-          <div className="container" ref={heroRef}>
-            <div className="subheading proc-hero-el" style={{ marginBottom: '1.5rem' }}>How We Work</div>
-            <h1 className="heading-xl proc-hero-el" style={{ color: 'var(--white)', marginBottom: '0.5rem' }}>
+          <div className="container" ref={heroRef} style={{ position: 'relative', zIndex: 1 }}>
+            <div className="section-label proc-hero-el" style={{ marginBottom: '1.5rem' }}>
+              <span className="text-label" style={{ color: 'var(--gold)' }}>How We Work</span>
+            </div>
+            <h1 className="text-h1 proc-hero-el" style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
               THE STRUDERS
             </h1>
-            <h1 className="heading-xl proc-hero-el" style={{ color: 'var(--gold)', marginBottom: '2rem' }}>
+            <h1 className="text-h1 proc-hero-el text-gradient-animated" style={{ marginBottom: '2rem' }}>
               PROCESS.
             </h1>
-            <p className="body-text proc-hero-el" style={{ maxWidth: '560px' }}>
+            <p className="text-body proc-hero-el" style={{ maxWidth: '560px' }}>
               Five proven phases. Every engagement follows this precision framework —
               because great brands aren't built by accident, they're engineered.
             </p>
           </div>
         </section>
 
-        {/* ── Brand Video Scroll ──────────────────────────────────────── */}
-        <VideoScrollScene height="160vh" label="Process — How We Work" />
-
         {/* ── Process Steps ───────────────────────────────────────────── */}
-        <section className="section" style={{ background: 'var(--black)' }}>
+        <section className="section" style={{ background: 'var(--surface-0)' }}>
           <div className="container">
             <div style={{ position: 'relative' }}>
               {steps.map((step, i) => (
@@ -188,7 +189,6 @@ export default function ProcessPage() {
                       gridTemplateColumns: i % 2 === 0 ? '1fr auto 1fr' : '1fr auto 1fr',
                       gap: '0',
                       alignItems: 'center',
-                      marginBottom: i < steps.length - 1 ? '0' : '0',
                     }}
                     className="process-step-row"
                   >
@@ -212,7 +212,7 @@ export default function ProcessPage() {
                         <div
                           ref={el => connectorRefs.current[i - 1] = el}
                           style={{
-                            width: '1px',
+                            width: '2px',
                             height: '60px',
                             background: 'linear-gradient(to bottom, var(--gold-dim), rgba(201,168,76,0.3))',
                           }}
@@ -223,24 +223,26 @@ export default function ProcessPage() {
                       <div className="step-number" style={{
                         width: '64px', height: '64px',
                         borderRadius: '50%',
-                        border: '1px solid var(--gold)',
+                        border: '1px solid rgba(201,168,76,0.2)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        background: 'rgba(201,168,76,0.05)',
-                        boxShadow: '0 0 30px rgba(201,168,76,0.1)',
+                        background: 'rgba(20,20,20,0.5)',
+                        backdropFilter: 'blur(10px)',
+                        boxShadow: '0 0 20px rgba(0,0,0,0.2)',
                         flexShrink: 0,
                       }}>
                         <span style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: '0.75rem',
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '1rem',
+                          fontWeight: 700,
                           color: 'var(--gold)',
-                          letterSpacing: '0.1em',
+                          letterSpacing: '0.05em',
                         }}>{step.number}</span>
                       </div>
 
                       {/* Bottom connector */}
                       {i < steps.length - 1 && (
                         <div style={{
-                          width: '1px',
+                          width: '2px',
                           height: '60px',
                           background: 'linear-gradient(to bottom, rgba(201,168,76,0.3), transparent)',
                         }} />
@@ -269,49 +271,49 @@ export default function ProcessPage() {
 
         {/* ── Code Terminal Section ────────────────────────────────────── */}
         <section className="section" style={{
-          background: 'linear-gradient(135deg, var(--navy) 0%, var(--black) 100%)',
+          background: 'var(--black)',
         }}>
           <div className="container">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem', alignItems: 'center' }} className="terminal-grid">
               {/* Terminal */}
-              <div ref={codeRef} style={{
-                background: 'rgba(5,5,5,0.8)',
-                border: '1px solid rgba(201,168,76,0.15)',
-                borderRadius: '6px',
+              <div ref={codeRef} className="glass-card" style={{
+                background: 'rgba(10,10,10,0.8)',
+                borderRadius: '12px',
                 overflow: 'hidden',
-                fontFamily: 'var(--font-mono)',
+                padding: 0,
+                border: '1px solid var(--border)',
               }}>
                 {/* Terminal bar */}
                 <div style={{
-                  padding: '0.75rem 1rem',
-                  background: 'rgba(255,255,255,0.03)',
-                  borderBottom: '1px solid rgba(201,168,76,0.1)',
+                  padding: '1rem 1.25rem',
+                  background: 'rgba(255,255,255,0.02)',
+                  borderBottom: '1px solid var(--border)',
                   display: 'flex', alignItems: 'center', gap: '0.5rem',
                 }}>
-                  {['#C94F4F', '#C9A84C', '#4FC97A'].map((c, i) => (
-                    <div key={i} style={{ width: 10, height: 10, borderRadius: '50%', background: c, opacity: 0.8 }} />
+                  {['#ff5f56', '#ffbd2e', '#27c93f'].map((c, i) => (
+                    <div key={i} style={{ width: 12, height: 12, borderRadius: '50%', background: c }} />
                   ))}
-                  <span style={{ color: 'var(--white-muted)', fontSize: '0.65rem', marginLeft: '0.5rem', letterSpacing: '0.1em' }}>
+                  <span style={{ color: 'var(--text-tertiary)', fontSize: '0.75rem', marginLeft: '0.5rem', letterSpacing: '0.05em', fontFamily: 'monospace' }}>
                     struders.js
                   </span>
                 </div>
-                <div style={{ padding: '1.5rem', lineHeight: 1.8 }}>
+                <div style={{ padding: '1.5rem', lineHeight: 1.8, fontFamily: 'monospace' }}>
                   {codeLines.map((line, i) => (
                     <div key={i} ref={el => linesRef.current[i] = el} style={{
                       paddingLeft: `${line.indent * 1.5}rem`,
-                      fontSize: '0.82rem',
-                      color: line.color || 'var(--white-dim)',
+                      fontSize: '0.85rem',
+                      color: line.color || 'var(--text-secondary)',
                       letterSpacing: '0.02em',
                       minHeight: '1.6rem',
                     }}>
-                      <span style={{ color: 'rgba(201,168,76,0.25)', marginRight: '1rem', userSelect: 'none', fontSize: '0.65rem' }}>
+                      <span style={{ color: 'rgba(255,255,255,0.15)', marginRight: '1rem', userSelect: 'none', fontSize: '0.75rem' }}>
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       {line.text}
                     </div>
                   ))}
                   <div style={{ paddingLeft: '0', display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '0.25rem' }}>
-                    <span style={{ color: 'rgba(201,168,76,0.25)', marginRight: '1rem', fontSize: '0.65rem' }}>09</span>
+                    <span style={{ color: 'rgba(255,255,255,0.15)', marginRight: '1rem', fontSize: '0.75rem' }}>09</span>
                     <span ref={cursorRef} style={{
                       display: 'inline-block', width: '8px', height: '16px',
                       background: 'var(--gold)', verticalAlign: 'middle',
@@ -322,27 +324,29 @@ export default function ProcessPage() {
 
               {/* Text */}
               <div>
-                <div className="subheading" style={{ marginBottom: '1rem' }}>Strategy & Growth</div>
-                <h2 className="heading-lg" style={{ color: 'var(--white)', marginBottom: '1.5rem' }}>
+                <div className="section-label" style={{ marginBottom: '1rem' }}>
+                  <span className="text-label" style={{ color: 'var(--text-secondary)' }}>Strategy & Growth</span>
+                </div>
+                <h2 className="text-h2" style={{ color: 'var(--text-primary)', marginBottom: '1.5rem' }}>
                   STRATEGY THAT<br />
-                  DRIVES <span style={{ color: 'var(--gold)' }}>GROWTH</span>
+                  DRIVES <span className="text-gradient">GROWTH</span>
                 </h2>
-                <p className="body-text" style={{ marginBottom: '2rem' }}>
+                <p className="text-body" style={{ marginBottom: '2rem' }}>
                   Every successful brand starts with a blueprint. We craft precision strategies —
                   roadmaps built on insight, culture, and data — that guide brands toward
                   measurable, lasting growth.
                 </p>
                 {['Brand Positioning', 'Market Research', 'Growth Roadmaps', 'Competitive Analysis'].map(f => (
                   <div key={f} style={{
-                    display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.9rem',
+                    display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem',
                   }}>
                     <div style={{
                       width: '6px', height: '6px', borderRadius: '50%',
                       background: 'var(--gold)', boxShadow: '0 0 8px rgba(201,168,76,0.5)', flexShrink: 0,
                     }} />
                     <span style={{
-                      fontFamily: 'var(--font-heading)', fontSize: '0.95rem',
-                      fontWeight: 400, color: 'var(--white-dim)', letterSpacing: '0.05em',
+                      fontFamily: 'var(--font-sans)', fontSize: '1rem',
+                      fontWeight: 500, color: 'var(--text-secondary)', letterSpacing: '-0.01em',
                     }}>{f}</span>
                   </div>
                 ))}
@@ -365,12 +369,42 @@ export default function ProcessPage() {
 // ── Process Card sub-component ────────────────────────────────────────────────
 function ProcessCard({ step, align }) {
   return (
-    <div className="glass-card" style={{
+    <div className="glass-card tilt-card" style={{
       padding: '2rem',
       textAlign: align,
       maxWidth: '460px',
       marginLeft: align === 'right' ? 'auto' : '0',
-    }}>
+      borderRadius: '16px',
+      position: 'relative',
+    }}
+    onMouseMove={(e) => {
+      const card = e.currentTarget;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rotX = ((y - cy) / cy) * -6;
+      const rotY = ((x - cx) / cx) * 8;
+      
+      gsap.to(card, {
+        rotateX: rotX,
+        rotateY: rotY,
+        duration: 0.4,
+        ease: 'power2.out',
+        transformPerspective: 800,
+      });
+    }}
+    onMouseLeave={(e) => {
+      gsap.to(e.currentTarget, {
+        rotateX: 0,
+        rotateY: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        transformPerspective: 800,
+      });
+    }}
+    >
       {/* Icon + Duration */}
       <div style={{
         display: 'flex',
@@ -381,32 +415,35 @@ function ProcessCard({ step, align }) {
       }}>
         <span style={{ fontSize: '1.4rem', color: 'var(--gold)' }}>{step.icon}</span>
         <span style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.6rem',
-          letterSpacing: '0.15em',
-          color: 'var(--gold)',
-          border: '1px solid rgba(201,168,76,0.3)',
+          display: 'inline-block',
           padding: '0.2rem 0.6rem',
+          borderRadius: '9999px',
+          fontSize: '0.65rem',
+          fontWeight: 600,
+          fontFamily: 'var(--font-sans)',
+          background: 'rgba(201,168,76,0.1)',
+          border: '1px solid rgba(201,168,76,0.2)',
+          color: 'var(--gold)',
+          letterSpacing: '0.05em',
           textTransform: 'uppercase',
         }}>{step.duration}</span>
       </div>
 
       <h3 style={{
-        fontFamily: 'var(--font-heading)',
-        fontSize: '1.2rem',
+        fontFamily: 'var(--font-sans)',
+        fontSize: '1.25rem',
         fontWeight: 700,
-        letterSpacing: '0.08em',
-        textTransform: 'uppercase',
-        color: 'var(--white)',
+        letterSpacing: '-0.02em',
+        color: 'var(--text-primary)',
         marginBottom: '0.75rem',
       }}>{step.title}</h3>
 
       <p style={{
-        fontFamily: 'var(--font-heading)',
-        fontSize: '0.875rem',
-        fontWeight: 300,
+        fontFamily: 'var(--font-sans)',
+        fontSize: '0.9rem',
+        fontWeight: 400,
         lineHeight: 1.7,
-        color: 'var(--white-dim)',
+        color: 'var(--text-secondary)',
         marginBottom: '1.25rem',
       }}>{step.desc}</p>
 
@@ -419,14 +456,14 @@ function ProcessCard({ step, align }) {
       }}>
         {step.deliverables.map(d => (
           <span key={d} style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.58rem',
-            letterSpacing: '0.1em',
-            color: 'var(--white-muted)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            padding: '0.2rem 0.5rem',
-            borderRadius: '2px',
-            textTransform: 'uppercase',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '0.7rem',
+            fontWeight: 500,
+            letterSpacing: '0.02em',
+            color: 'var(--text-tertiary)',
+            border: '1px solid var(--border)',
+            padding: '0.3rem 0.6rem',
+            borderRadius: '9999px',
           }}>{d}</span>
         ))}
       </div>

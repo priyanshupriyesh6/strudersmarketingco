@@ -96,12 +96,13 @@ export default function Loader({ onComplete }) {
       <div ref={logoRef} style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
         <SMLogoMark size={120} />
         <div style={{
-          fontFamily: 'var(--font-heading)',
+          fontFamily: 'var(--font-sans)',
           fontSize: '0.65rem',
-          letterSpacing: '0.6em',
-          color: 'var(--white-dim)',
+          letterSpacing: '0.25em',
+          color: 'var(--text-secondary)',
           marginTop: '1rem',
-          textTransform: 'uppercase'
+          textTransform: 'uppercase',
+          fontWeight: 500,
         }}>
           STRUDERS MARKETING CO.
         </div>
@@ -132,21 +133,21 @@ export default function Loader({ onComplete }) {
         width: '100%'
       }}>
         <div ref={taglineRef} style={{
-          fontFamily: 'var(--font-mono)',
+          fontFamily: 'var(--font-sans)',
           fontSize: '0.75rem',
-          letterSpacing: '0.3em',
+          letterSpacing: '0.1em',
           color: 'var(--gold)',
-          textTransform: 'uppercase',
+          fontWeight: 600,
           marginBottom: '0.5rem'
         }}>
           Building Influence. Creating Impact.
         </div>
         <div ref={subtitleRef} style={{
-          fontFamily: 'var(--font-heading)',
+          fontFamily: 'var(--font-sans)',
           fontSize: '0.7rem',
-          letterSpacing: '0.2em',
-          color: 'var(--white-muted)',
-          textTransform: 'uppercase'
+          letterSpacing: '0.1em',
+          color: 'var(--text-tertiary)',
+          fontWeight: 400,
         }}>
           Strategy · Creativity · Growth
         </div>

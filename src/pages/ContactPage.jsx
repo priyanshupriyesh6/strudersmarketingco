@@ -3,7 +3,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import VideoScrollScene from '../components/VideoScrollScene'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -54,13 +53,13 @@ export default function ContactPage() {
     const ctx = gsap.context(() => {
       // Hero
       gsap.fromTo(heroRef.current.querySelectorAll('.contact-hero-el'),
-        { opacity: 0, y: 70 },
-        { opacity: 1, y: 0, stagger: 0.12, duration: 1.1, ease: 'power4.out', delay: 0.3 }
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, stagger: 0.12, duration: 1.1, ease: 'power3.out', delay: 0.2 }
       )
 
       // Info cards
       gsap.fromTo(infoRef.current.querySelectorAll('.info-card'),
-        { opacity: 0, x: -50 },
+        { opacity: 0, x: -30 },
         {
           opacity: 1, x: 0, stagger: 0.15, duration: 0.8, ease: 'power3.out',
           scrollTrigger: { trigger: infoRef.current, start: 'top 80%', once: true }
@@ -69,7 +68,7 @@ export default function ContactPage() {
 
       // Form reveal
       gsap.fromTo(formRef.current,
-        { opacity: 0, y: 60 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1, y: 0, duration: 1, ease: 'power3.out',
           scrollTrigger: { trigger: formRef.current, start: 'top 85%', once: true }
@@ -82,7 +81,7 @@ export default function ContactPage() {
   const handleSubmit = (e) => {
     e.preventDefault()
     setLoading(true)
-    // EmailJS integration (replace with your actual IDs)
+    // Simulated submission
     setTimeout(() => {
       setLoading(false)
       setSubmitted(true)
@@ -93,40 +92,38 @@ export default function ContactPage() {
           { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.4)' }
         )
       }
-    }, 1600)
+    }, 1200)
   }
 
   const inputStyle = {
     width: '100%',
     padding: '1rem 1.25rem',
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(201,168,76,0.2)',
-    borderRadius: '2px',
-    color: 'var(--white-soft)',
-    fontFamily: 'var(--font-heading)',
+    background: 'rgba(255,255,255,0.02)',
+    border: '1px solid var(--border)',
+    borderRadius: '12px',
+    color: 'var(--text-primary)',
+    fontFamily: 'var(--font-sans)',
     fontSize: '0.95rem',
-    fontWeight: 300,
-    letterSpacing: '0.05em',
+    fontWeight: 400,
     outline: 'none',
     transition: 'border-color 0.3s, box-shadow 0.3s',
   }
 
   const labelStyle = {
-    fontFamily: 'var(--font-mono)',
-    fontSize: '0.65rem',
-    letterSpacing: '0.25em',
-    color: 'var(--gold)',
-    textTransform: 'uppercase',
+    fontFamily: 'var(--font-sans)',
+    fontSize: '0.75rem',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
     marginBottom: '0.5rem',
     display: 'block',
   }
 
   const focusStyle = (e) => {
     e.target.style.borderColor = 'var(--gold)'
-    e.target.style.boxShadow = '0 0 20px rgba(201,168,76,0.1)'
+    e.target.style.boxShadow = '0 0 0 2px rgba(201,168,76,0.1)'
   }
   const blurStyle = (e) => {
-    e.target.style.borderColor = 'rgba(201,168,76,0.2)'
+    e.target.style.borderColor = 'var(--border)'
     e.target.style.boxShadow = 'none'
   }
 
@@ -141,38 +138,40 @@ export default function ContactPage() {
           alignItems: 'flex-end',
           paddingTop: '10rem',
           paddingBottom: '5rem',
-          background: 'linear-gradient(180deg, var(--navy) 0%, var(--black) 100%)',
+          background: 'var(--black)',
           position: 'relative',
           overflow: 'hidden',
         }}>
           {/* Radial glow bottom */}
           <div style={{
             position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)',
-            width: '700px', height: '300px',
-            background: 'radial-gradient(ellipse, rgba(201,168,76,0.07) 0%, transparent 70%)',
+            width: '700px', height: '400px',
+            background: 'radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />
 
-          <div className="container" ref={heroRef}>
-            <div className="subheading contact-hero-el" style={{ marginBottom: '1.5rem' }}>Get In Touch</div>
-            <h1 className="heading-xl contact-hero-el" style={{ color: 'var(--white)', marginBottom: '0.5rem' }}>
+          {/* Dot Grid Background */}
+          <div className="bg-dots" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.4 }} />
+
+          <div className="container" ref={heroRef} style={{ position: 'relative', zIndex: 1 }}>
+            <div className="section-label contact-hero-el" style={{ marginBottom: '1.5rem' }}>
+              <span className="text-label" style={{ color: 'var(--gold)' }}>Get In Touch</span>
+            </div>
+            <h1 className="text-h1 contact-hero-el" style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
               LET'S BUILD SOMETHING
             </h1>
-            <h1 className="heading-xl contact-hero-el" style={{ color: 'var(--gold)', marginBottom: '2rem' }}>
+            <h1 className="text-h1 contact-hero-el text-gradient-animated" style={{ marginBottom: '2rem' }}>
               POWERFUL.
             </h1>
-            <p className="body-text contact-hero-el" style={{ maxWidth: '560px' }}>
+            <p className="text-body contact-hero-el" style={{ maxWidth: '560px' }}>
               Ready to elevate your brand? Tell us about your vision and let's create
               something extraordinary together.
             </p>
           </div>
         </section>
 
-        {/* ── Brand Video Scroll ──────────────────────────────────────── */}
-        <VideoScrollScene height="140vh" label="Contact — Start Your Journey" />
-
         {/* ── Contact Content ──────────────────────────────────────────── */}
-        <section className="section" style={{ background: 'var(--black)' }}>
+        <section className="section" style={{ background: 'var(--surface-0)' }}>
           {/* Gold glow */}
           <div style={{
             position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)',
@@ -181,7 +180,7 @@ export default function ContactPage() {
             pointerEvents: 'none',
           }} />
 
-          <div className="container">
+          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1.8fr',
@@ -191,39 +190,58 @@ export default function ContactPage() {
 
               {/* ── Contact Info ──────────────────────────────────────── */}
               <div ref={infoRef}>
-                <div className="subheading" style={{ marginBottom: '2rem' }}>Reach Us</div>
+                <div className="section-label" style={{ marginBottom: '2rem' }}>
+                  <span className="text-label" style={{ color: 'var(--text-secondary)' }}>Reach Us</span>
+                </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '3rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '3rem' }}>
                   {contactInfo.map((info, i) => (
-                    <div key={i} className="info-card glass-card" style={{ padding: '1.5rem' }}>
+                    <div key={i} className="info-card glass-card tilt-card" style={{ padding: '1.5rem', borderRadius: '16px' }}
+                    onMouseMove={(e) => {
+                      const card = e.currentTarget;
+                      const rect = card.getBoundingClientRect();
+                      const x = e.clientX - rect.left;
+                      const y = e.clientY - rect.top;
+                      const cx = rect.width / 2;
+                      const cy = rect.height / 2;
+                      const rotX = ((y - cy) / cy) * -4;
+                      const rotY = ((x - cx) / cx) * 6;
+                      gsap.to(card, { rotateX: rotX, rotateY: rotY, duration: 0.4, transformPerspective: 800 });
+                    }}
+                    onMouseLeave={(e) => {
+                      gsap.to(e.currentTarget, { rotateX: 0, rotateY: 0, duration: 0.7 });
+                    }}
+                    >
                       <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
                         <div style={{
                           color: 'var(--gold)',
+                          background: 'rgba(201,168,76,0.1)',
+                          padding: '0.6rem',
+                          borderRadius: '10px',
                           flexShrink: 0,
-                          marginTop: '2px',
                         }}>{info.icon}</div>
                         <div>
                           <div style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.6rem',
-                            letterSpacing: '0.2em',
-                            color: 'var(--gold)',
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            color: 'var(--text-secondary)',
                             textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
                             marginBottom: '0.4rem',
                           }}>{info.label}</div>
                           <div style={{
-                            fontFamily: 'var(--font-heading)',
-                            fontSize: '0.95rem',
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '1rem',
                             fontWeight: 500,
-                            color: 'var(--white-soft)',
+                            color: 'var(--text-primary)',
                             marginBottom: '0.25rem',
                           }}>{info.value}</div>
                           {info.sub && (
                             <div style={{
-                              fontFamily: 'var(--font-heading)',
-                              fontSize: '0.8rem',
-                              fontWeight: 300,
-                              color: 'var(--white-muted)',
+                              fontFamily: 'var(--font-sans)',
+                              fontSize: '0.85rem',
+                              color: 'var(--text-tertiary)',
                             }}>{info.sub}</div>
                           )}
                         </div>
@@ -233,30 +251,24 @@ export default function ContactPage() {
                 </div>
 
                 {/* Social links */}
-                <div className="subheading" style={{ marginBottom: '1rem' }}>Follow Us</div>
+                <div className="section-label" style={{ marginBottom: '1.5rem' }}>
+                  <span className="text-label" style={{ color: 'var(--text-secondary)' }}>Follow Us</span>
+                </div>
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                   {['Instagram', 'LinkedIn', 'YouTube', 'Twitter'].map(s => (
-                    <a key={s} href="#" style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.6rem',
-                      letterSpacing: '0.15em',
-                      color: 'var(--white-muted)',
+                    <a key={s} href="#" className="pill" style={{
                       textDecoration: 'none',
-                      border: '1px solid rgba(201,168,76,0.15)',
-                      padding: '0.4rem 0.8rem',
-                      borderRadius: '2px',
-                      textTransform: 'uppercase',
-                      transition: 'all 0.3s ease',
+                      color: 'var(--text-secondary)',
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid var(--border)',
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.color = 'var(--gold)'
-                      e.currentTarget.style.borderColor = 'var(--gold)'
-                      e.currentTarget.style.boxShadow = '0 0 12px rgba(201,168,76,0.15)'
+                      e.currentTarget.style.color = 'var(--text-primary)'
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'
                     }}
                     onMouseLeave={e => {
-                      e.currentTarget.style.color = 'var(--white-muted)'
-                      e.currentTarget.style.borderColor = 'rgba(201,168,76,0.15)'
-                      e.currentTarget.style.boxShadow = 'none'
+                      e.currentTarget.style.color = 'var(--text-secondary)'
+                      e.currentTarget.style.borderColor = 'var(--border)'
                     }}
                     >{s}</a>
                   ))}
@@ -269,16 +281,16 @@ export default function ContactPage() {
                   <div style={{
                     textAlign: 'center',
                     padding: '5rem 2rem',
-                    background: 'var(--glass)',
+                    background: 'var(--surface-1)',
                     border: '1px solid var(--gold)',
-                    borderRadius: '2px',
+                    borderRadius: '16px',
                     boxShadow: '0 0 60px rgba(201,168,76,0.1)',
                   }}>
                     <div style={{ fontSize: '3rem', marginBottom: '1.5rem', color: 'var(--gold)' }}>✦</div>
-                    <h3 className="heading-md" style={{ color: 'var(--gold)', marginBottom: '1rem' }}>
+                    <h3 className="text-h2" style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>
                       Your Journey Begins.
                     </h3>
-                    <p className="body-text">
+                    <p className="text-body" style={{ color: 'var(--text-secondary)' }}>
                       We've received your message and will be in touch within 24 hours.
                     </p>
                     <div style={{
@@ -288,23 +300,21 @@ export default function ContactPage() {
                     <p style={{
                       fontFamily: 'var(--font-serif)',
                       fontStyle: 'italic',
-                      color: 'var(--gold)',
-                      fontSize: '1rem',
+                      color: 'var(--text-secondary)',
+                      fontSize: '1.2rem',
                       opacity: 0.8,
                     }}>
                       "Powered by Vision."
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} style={{
-                    background: 'rgba(5,5,5,0.7)',
-                    border: '1px solid rgba(201,168,76,0.15)',
-                    borderRadius: '2px',
+                  <form onSubmit={handleSubmit} className="glass-card" style={{
                     padding: '3.5rem',
-                    backdropFilter: 'blur(20px)',
-                    boxShadow: '0 40px 80px rgba(0,0,0,0.4)',
+                    borderRadius: '24px',
                   }}>
-                    <div className="subheading" style={{ marginBottom: '2rem' }}>Your Details</div>
+                    <div className="section-label" style={{ marginBottom: '2rem' }}>
+                      <span className="text-label" style={{ color: 'var(--text-primary)' }}>Your Details</span>
+                    </div>
 
                     {/* Name + Brand */}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }} className="form-row">
@@ -358,10 +368,9 @@ export default function ContactPage() {
                     {/* Submit */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
                       <p style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.6rem',
-                        color: 'var(--white-muted)',
-                        letterSpacing: '0.1em',
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '0.8rem',
+                        color: 'var(--text-tertiary)',
                       }}>
                         We respond within 24 hours.
                       </p>
@@ -369,20 +378,13 @@ export default function ContactPage() {
                         id="contact-submit-btn"
                         type="submit"
                         disabled={loading}
-                        className="btn-gold animate-pulse-gold"
+                        className="btn-primary pill"
                         style={{
-                          fontSize: '0.85rem',
-                          padding: '1rem 3rem',
-                          letterSpacing: '0.25em',
                           cursor: loading ? 'wait' : 'pointer',
+                          minWidth: '200px',
                         }}
                       >
                         {loading ? 'Sending...' : 'Start Your Journey'}
-                        {!loading && (
-                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                            <path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                          </svg>
-                        )}
                       </button>
                     </div>
                   </form>

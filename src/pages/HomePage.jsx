@@ -2,8 +2,10 @@ import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import Stats from '../components/Stats'
 import BrandStrip from '../components/BrandStrip'
+import About from '../components/About'
+import Services from '../components/Services'
+import FeaturedWork from '../components/FeaturedWork'
 import Footer from '../components/Footer'
-import VideoScrollScene from '../components/VideoScrollScene'
 
 export default function HomePage() {
   return (
@@ -11,10 +13,11 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        {/* Brand video scroll scene after hero */}
-        <VideoScrollScene height="200vh" label="Struders Marketing Co." />
         <Stats />
         <BrandStrip />
+        <About />
+        <Services />
+        <FeaturedWork />
       </main>
       <Footer />
     </div>

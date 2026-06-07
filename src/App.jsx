@@ -66,15 +66,15 @@ function AppShell() {
   const cursorRef = useRef(null)
   const mainRef   = useRef(null)
 
-  // Mouse follow cursor glow
+  // Mouse follow cursor glow (Framer-style white spotlight)
   useEffect(() => {
     const onMove = (e) => {
       if (!cursorRef.current) return
       gsap.to(cursorRef.current, {
         x: e.clientX,
         y: e.clientY,
-        duration: 0.6,
-        ease: 'power2.out',
+        duration: 0.9,
+        ease: 'power3.out',
       })
     }
     window.addEventListener('mousemove', onMove)
@@ -92,10 +92,7 @@ function AppShell() {
 
   return (
     <>
-      {/* Film grain noise overlay */}
-      <div className="noise-overlay" />
-
-      {/* Mouse cursor glow */}
+      {/* Mouse cursor spotlight (Framer-style white glow) */}
       <div ref={cursorRef} className="cursor-glow" style={{ opacity: loaded ? 1 : 0 }} />
 
       {/* Loading screen */}
